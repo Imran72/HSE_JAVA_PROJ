@@ -1,5 +1,8 @@
+import chronicles.martian.Conservator;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello, WORLD!");
+        int a = 1;
+        System.out.println(((Object) a).getClass().getSimpleName());
     }
 }
