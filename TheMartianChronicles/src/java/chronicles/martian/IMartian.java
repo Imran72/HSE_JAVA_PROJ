@@ -16,7 +16,7 @@ public interface IMartian<T> {
     default boolean hasChildWithValue(T value) {
         List<IMartian<T>> children = this.getChildren();
         for (IMartian<T> child : children) {
-            if (((Novator<T>) child).value.equals(value))
+            if (((Innovator<T>) child).value.equals(value))
                 return true;
         }
         return false;
@@ -37,7 +37,7 @@ public interface IMartian<T> {
         List<IMartian<T>> children = this.getChildren();
         List<IMartian<T>> localDescadants = new ArrayList<>();
         for (IMartian<T> child : children) {
-            if (child.getChildren() != null)
+            if (!child.getChildren().isEmpty())
                 localDescadants.addAll((child.ExpressDescadants()));
             else
                 localDescadants.add(child);
