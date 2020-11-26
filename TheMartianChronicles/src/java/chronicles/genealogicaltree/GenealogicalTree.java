@@ -1,3 +1,7 @@
+/**
+ * @author <a href="mailto:iatimkanov@edu.hse.ru"> Imran Timkanov</a>
+ */
+
 package chronicles.genealogicaltree;
 
 import chronicles.martian.Conservative;
@@ -8,27 +12,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GenealogicalTree {
-    List<IMartian> martians;
-    String tree;
+    List<IMartian> martians; // коллекция марсиан для вывода
+    String tree; // строковое представление марсиан
 
+
+    /**
+     * Геттер коллекции местных марсинан
+     */
     public List<IMartian> getMartians() {
         return martians;
     }
 
+
+    /**
+     * Геттер строкового представление марсиан
+     */
     public String getTree() {
         return tree;
     }
 
+
+    /**
+     * Конструктор, принимающий лист марсиан и преобразующий его в строковый вид
+     */
     public GenealogicalTree(List<IMartian> list) {
         martians = list;
         tree = getTextTree(list, 0);
     }
 
+    /**
+     * Конструктор, принимающий строкое представление марсиан и преобразующий его в коллекцию марсиан
+     */
     public GenealogicalTree(String tree) {
         this.tree = tree;
         martians = getMartians(null, tree.split("\n"), 0, 0);
     }
 
+    /**
+     * Конструктор, преобразования марсиан - новатор ->> консерватор
+     */
     List<IMartian> getDiverseList(List<IMartian> list) {
         for (int i = 0; i < list.size() - 1; i++) {
             if (((Innovator) list.get(i)).getTransitionForm())
@@ -37,8 +59,13 @@ public class GenealogicalTree {
         return list;
     }
 
+    /**
+     * Метод преобразования коллекции марсиан в строковый вид, работает рекурсивно
+     */
     String getTextTree(List<IMartian> martians, int indent) {
         String tree = "";
+        if (martians == null)
+            return tree;
         for (IMartian martian : martians) {
             tree += " ".repeat(indent) + martian.toString() + '\n' + getTextTree(martian.getChildren(), indent + 4);
         }
@@ -46,6 +73,9 @@ public class GenealogicalTree {
         return tree;
     }
 
+    /**
+     * Метод преобразования строки-иерархии марсиан в коллекцию марсиан
+     */
     List<IMartian> getMartians(IMartian parent, String[] arr, int indent, int index) {
         List<IMartian> list = new ArrayList<IMartian>();
         for (int i = index; i < arr.length; i++) {
@@ -63,12 +93,15 @@ public class GenealogicalTree {
             }
 
         }
-
+        list = getDiverseList(list);
         return list;
     }
 
+    /**
+     * Метод парсинга строки на основании которой инициализируется марсианини
+     */
     Innovator getMartian(String a, IMartian parent) {
         a = a.trim();
-        return new Innovator(parent, a.substring(a.indexOf(':') + 1, a.length() - 1), a.startsWith("InnovatorMartian") ? false : true);
+        return new Innovator(parent, a.substring(a.indexOf(':') + 1, a.length() - 1), !a.startsWith("InnovatorMartian"));
     }
 }
